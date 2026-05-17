@@ -63,7 +63,7 @@ export default async function DashboardPage() {
           d.getFullYear() === year
         );
       })
-      .reduce((sum, inv) => sum + inv.total, 0),
+      .reduce((sum: number, inv: InvoiceSummary) => sum + inv.total, 0),
   }));
 
 
