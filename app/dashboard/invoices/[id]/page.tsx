@@ -66,7 +66,6 @@ export default async function InvoicePage({
       </div>
 
       <div className="bg-white border border-gray-200 rounded-xl p-8 space-y-8">
-        
         <div className="sm:flex justify-between items-start">
           <div>
             <h2 className="text-2xl font-bold">INVOICE</h2>
@@ -113,14 +112,28 @@ export default async function InvoicePage({
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
-              {invoice.items.map((item) => (
-                <tr key={item.id}>
-                  <td className="py-3">{item.description}</td>
-                  <td className="py-3 text-right max-sm:hidden">{item.quantity}</td>
-                  <td className="py-3 text-right max-sm:hidden">${item.rate.toFixed(2)}</td>
-                  <td className="py-3 text-right">${item.amount.toFixed(2)}</td>
-                </tr>
-              ))}
+              {invoice.items.map(
+                (item: {
+                  id: string;
+                  description: string;
+                  quantity: number;
+                  rate: number;
+                  amount: number;
+                }) => (
+                  <tr key={item.id}>
+                    <td className="py-3">{item.description}</td>
+                    <td className="py-3 text-right max-sm:hidden">
+                      {item.quantity}
+                    </td>
+                    <td className="py-3 text-right max-sm:hidden">
+                      ${item.rate.toFixed(2)}
+                    </td>
+                    <td className="py-3 text-right">
+                      ${item.amount.toFixed(2)}
+                    </td>
+                  </tr>
+                ),
+              )}
             </tbody>
           </table>
         </div>
