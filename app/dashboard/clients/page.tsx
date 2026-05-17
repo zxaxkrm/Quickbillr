@@ -4,7 +4,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import { Users, Plus } from "lucide-react";
-import { Client } from "@prisma/client";
+
 
 export const metadata = { title: "Clients" };
 
@@ -51,7 +51,7 @@ export default async function ClientsPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
-              {clients.map((client: Client & {_count: {invoices: number}}) => (
+            {clients.map((client: { id: string; name: string; email: string; phone: string | null; _count: { invoices: number } }) => (
                 <tr key={client.id} className="hover:bg-gray-50">
                   <td className="px-4 py-3 font-medium">{client.name}</td>
                   <td className="px-4 py-3 text-gray-500">{client.email}</td>
