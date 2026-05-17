@@ -33,10 +33,11 @@ export async function POST(
   }
 
 
-  const pdfBuffer = await renderToBuffer(
-    React.createElement(InvoicePDF, { invoice }) as any
-  );
-
+  
+const pdfBuffer = await renderToBuffer(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  React.createElement(InvoicePDF, { invoice }) as any
+);
 
   await resend.emails.send({
     from: "QuickBillr <onboarding@resend.dev>",

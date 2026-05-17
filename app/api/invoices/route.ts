@@ -26,7 +26,7 @@ export async function POST(req: Request) {
       subtotal,
       total,
       items: {
-        create: items.map((item: any) => ({
+        create: items.map((item: { description: string; quantity: number; rate: number; amount: number }) => ({
           description: item.description,
           quantity: item.quantity,
           rate: item.rate,

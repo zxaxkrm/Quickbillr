@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import RevenueChart from "@/components/RevenueChart";
 import InvoiceStatusChart from "@/components/InvoiceStatusChart";
+import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
@@ -93,7 +94,7 @@ export default async function DashboardPage() {
           Welcome back, {session?.user?.name?.split(" ")[0]}
         </h1>
         <p className="text-gray-500 text-sm mt-1">
-          Here's what's happening with your invoices.
+          Here&apos;s what&apos;s happening with your invoices.
         </p>
       </div>
 
@@ -124,9 +125,9 @@ export default async function DashboardPage() {
       <div className="bg-white border border-gray-200 rounded-xl p-6 space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="font-semibold">Recent Invoices</h2>
-          <a href="/dashboard/invoices" className="text-sm text-blue-600 hover:underline">
+          <Link href={"/dashboard/invoices"} className="text-sm text-blue-600 hover:underline">
             View all
-          </a>
+          </Link>
         </div>
 
         {recentInvoices.length === 0 ? (

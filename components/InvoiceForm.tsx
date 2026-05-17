@@ -25,7 +25,17 @@ export default function InvoiceForm({
 }: {
   clients: Client[];
   invoiceNumber: string;
-  invoice?: any;
+ invoice?: {
+  id: string;
+  clientId: string;
+  number: string;
+  issueDate: Date;
+  dueDate: Date;
+  notes?: string | null;
+  tax: number;
+  discount: number;
+  items: { description: string; quantity: number; rate: number; amount: number }[];
+}
 }) {
   const router = useRouter();
   const isEditing = !!invoice;

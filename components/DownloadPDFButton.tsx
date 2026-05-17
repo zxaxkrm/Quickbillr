@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import { Download } from "lucide-react";
+import type { InvoicePDFProps } from "./InvoicePDF";
 
-export default function DownloadPDFButton({ invoice }: { invoice: any }) {
+export default function DownloadPDFButton({ invoice }: { invoice: InvoicePDFProps["invoice"] }) {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleDownload = async () => {
@@ -13,7 +14,8 @@ export default function DownloadPDFButton({ invoice }: { invoice: any }) {
       const { pdf } = await import("@react-pdf/renderer");
       const InvoicePDF = (await import("./InvoicePDF")).default;
 
-      const blob = await pdf(<InvoicePDF invoice={invoice} />).toBlob();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const blob = await pdf(<InvoicePDF invoice={invoice} /> as any).toBlob();
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;

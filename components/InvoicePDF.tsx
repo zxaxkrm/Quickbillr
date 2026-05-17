@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
   },
 });
 
-interface InvoicePDFProps {
+export interface InvoicePDFProps {
   invoice: {
     number: string;
     issueDate: Date;
