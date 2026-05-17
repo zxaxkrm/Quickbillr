@@ -15,22 +15,27 @@ type InvoiceSummary = {
 export default async function DashboardPage() {
   const session = await auth();
 
-  const [totalInvoices, totalClients, paidInvoices, overdueInvoices, allInvoices] =
-    await Promise.all([
-      prisma.invoice.count({ where: { userId: session!.user.id } }),
-      prisma.client.count({ where: { userId: session!.user.id } }),
-      prisma.invoice.aggregate({
-        where: { userId: session!.user.id, status: "paid" },
-        _sum: { total: true },
-      }),
-      prisma.invoice.count({
-        where: { userId: session!.user.id, status: "overdue" },
-      }),
-      prisma.invoice.findMany({
-        where: { userId: session!.user.id },
-        select: { total: true, status: true, issueDate: true },
-      }),
-    ]);
+  const [
+    totalInvoices,
+    totalClients,
+    paidInvoices,
+    overdueInvoices,
+    allInvoices,
+  ] = await Promise.all([
+    prisma.invoice.count({ where: { userId: session!.user.id } }),
+    prisma.client.count({ where: { userId: session!.user.id } }),
+    prisma.invoice.aggregate({
+      where: { userId: session!.user.id, status: "paid" },
+      _sum: { total: true },
+    }),
+    prisma.invoice.count({
+      where: { userId: session!.user.id, status: "overdue" },
+    }),
+    prisma.invoice.findMany({
+      where: { userId: session!.user.id },
+      select: { total: true, status: true, issueDate: true },
+    }),
+  ]);
 
   const recentInvoices = await prisma.invoice.findMany({
     where: { userId: session!.user.id },
@@ -39,7 +44,6 @@ export default async function DashboardPage() {
     include: { client: { select: { name: true } } },
   });
 
-  
   const months = Array.from({ length: 6 }, (_, i) => {
     const date = new Date();
     date.setMonth(date.getMonth() - (5 - i));
@@ -49,8 +53,6 @@ export default async function DashboardPage() {
       monthIndex: date.getMonth(),
     };
   });
-
-  
 
   const revenueData = months.map(({ month, year, monthIndex }) => ({
     month,
@@ -66,10 +68,10 @@ export default async function DashboardPage() {
       .reduce((sum: number, inv: InvoiceSummary) => sum + inv.total, 0),
   }));
 
-
   const statusData = ["draft", "sent", "paid", "overdue"].map((status) => ({
     name: status,
-    value: allInvoices.filter((inv: InvoiceSummary) => inv.status === status).length,
+    value: allInvoices.filter((inv: InvoiceSummary) => inv.status === status)
+      .length,
   }));
 
   const stats = [
@@ -106,7 +108,6 @@ export default async function DashboardPage() {
         </p>
       </div>
 
-   
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {stats.map((stat) => (
           <div
@@ -119,7 +120,6 @@ export default async function DashboardPage() {
         ))}
       </div>
 
-     
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div className="lg:col-span-2">
           <RevenueChart data={revenueData} />
@@ -129,11 +129,13 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-     
       <div className="bg-white border border-gray-200 rounded-xl p-6 space-y-4">
         <div className="flex items-center justify-between">
           <h2 className="font-semibold">Recent Invoices</h2>
-          <Link href={"/dashboard/invoices"} className="text-sm text-blue-600 hover:underline">
+          <Link
+            href={"/dashboard/invoices"}
+            className="text-sm text-blue-600 hover:underline"
+          >
             View all
           </Link>
         </div>
@@ -154,29 +156,44 @@ export default async function DashboardPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
-              {recentInvoices.map((invoice) => (
-                <tr key={invoice.id}>
-                  <td className="py-3 font-medium">{invoice.number}</td>
-                  <td className="py-3 text-gray-500">{invoice.client.name}</td>
-                  <td className="py-3 max-sm:hidden">${invoice.total.toLocaleString()}</td>
-                  <td className="py-3">
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      invoice.status === "paid"
-                        ? "bg-green-100 text-green-700"
-                        : invoice.status === "overdue"
-                        ? "bg-red-100 text-red-700"
-                        : invoice.status === "sent"
-                        ? "bg-blue-100 text-blue-700"
-                        : "bg-gray-100 text-gray-700"
-                    }`}>
-                      {invoice.status}
-                    </span>
-                  </td>
-                  <td className="py-3 text-gray-500 text-xs max-sm:hidden">
-                    {new Date(invoice.dueDate).toLocaleDateString()}
-                  </td>
-                </tr>
-              ))}
+              {recentInvoices.map(
+                (invoice: {
+                  id: string;
+                  number: string;
+                  total: number;
+                  status: string;
+                  dueDate: Date;
+                  client: { name: string };
+                }) => (
+                  <tr key={invoice.id}>
+                    <td className="py-3 font-medium">{invoice.number}</td>
+                    <td className="py-3 text-gray-500">
+                      {invoice.client.name}
+                    </td>
+                    <td className="py-3 max-sm:hidden">
+                      ${invoice.total.toLocaleString()}
+                    </td>
+                    <td className="py-3">
+                      <span
+                        className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          invoice.status === "paid"
+                            ? "bg-green-100 text-green-700"
+                            : invoice.status === "overdue"
+                              ? "bg-red-100 text-red-700"
+                              : invoice.status === "sent"
+                                ? "bg-blue-100 text-blue-700"
+                                : "bg-gray-100 text-gray-700"
+                        }`}
+                      >
+                        {invoice.status}
+                      </span>
+                    </td>
+                    <td className="py-3 text-gray-500 text-xs max-sm:hidden">
+                      {new Date(invoice.dueDate).toLocaleDateString()}
+                    </td>
+                  </tr>
+                ),
+              )}
             </tbody>
           </table>
         )}
