@@ -6,6 +6,12 @@ import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
+type InvoiceSummary = {
+  total: number;
+  status: string;
+  issueDate: Date;
+};
+
 export default async function DashboardPage() {
   const session = await auth();
 
@@ -44,10 +50,12 @@ export default async function DashboardPage() {
     };
   });
 
+  
+
   const revenueData = months.map(({ month, year, monthIndex }) => ({
     month,
     revenue: allInvoices
-      .filter((inv) => {
+      .filter((inv: InvoiceSummary) => {
         const d = new Date(inv.issueDate);
         return (
           inv.status === "paid" &&
