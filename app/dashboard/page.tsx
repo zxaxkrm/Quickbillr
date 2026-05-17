@@ -69,7 +69,7 @@ export default async function DashboardPage() {
 
   const statusData = ["draft", "sent", "paid", "overdue"].map((status) => ({
     name: status,
-    value: allInvoices.filter((inv) => inv.status === status).length,
+    value: allInvoices.filter((inv: InvoiceSummary) => inv.status === status).length,
   }));
 
   const stats = [
