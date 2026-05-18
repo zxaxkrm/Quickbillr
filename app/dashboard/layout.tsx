@@ -18,7 +18,7 @@ export default async function DashboardLayout({
       
       <aside className="w-60 shrink-0 max-sm:hidden border-r border-gray-200 flex flex-col p-6">
        <Link href={"/dashboard"} className="py-8">
-        <Image src={"/logo1.png"} alt="logo1" height={180} width={180}  className="bg-white"/>
+        <Image src={"/Logo1.png"} alt="logo1" height={180} width={180}  className="bg-white"/>
        </Link>
 
         <nav className="space-y-1 flex-1">
@@ -67,7 +67,7 @@ export default async function DashboardLayout({
 
       <aside className=" shrink-0 sm:hidden border-r border-gray-200 flex flex-col py-6 px-2">
        <Link href={"/dashboard"} className="py-8">
-        <Image src={"/side1.png"} alt="logo1" height={40} width={40}  className="bg-white"/>
+        <Image src={"/Side1.png"} alt="logo1" height={40} width={40}  className="bg-white"/>
        </Link>
 
         <nav className="space-y-1 flex-1">
