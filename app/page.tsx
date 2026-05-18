@@ -12,11 +12,11 @@ export default async function Page() {
       <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-10 w-full max-w-md space-y-6 text-center">
         <div>
           <div  className="py-8 flex justify-center items-center">
-        <Image src={"/log1.png"} alt="logo1" height={180} width={180}  className="bg-white"/>
+        <Image src={"/logo1.png"} alt="logo1" height={180} width={180}  className="bg-white"/>
        </div>
 
        <div className="flex items-center justify-center">
-        <Image src={"/log3.png"} alt="logo3" height={180} width={180}  className="bg-white"/>
+        <Image src={"/land.png"} alt="logo3" height={180} width={180}  className="bg-white"/>
        </div>
           <p className="text-gray-500 text-sm mt-2">
             Create and send professional invoices in seconds.
